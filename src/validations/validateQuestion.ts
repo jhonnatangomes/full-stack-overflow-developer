@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { Question } from "../interfaces/QuestionsInterface";
+import { ValidationResponse } from "../interfaces/ValidationsInterface";
 
 const schema = Joi.object({
     question: Joi.string().required(),
@@ -8,7 +9,7 @@ const schema = Joi.object({
     tags: Joi.string().required(),
 })
 
-export default function validateQuestion(body: Question) {
+export default function validateQuestion(body: Question): ValidationResponse {
     const validate = schema.validate(body);
 
     if (validate.error) {
