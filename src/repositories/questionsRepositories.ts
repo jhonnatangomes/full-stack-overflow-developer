@@ -1,5 +1,5 @@
 import connection from "../database";
-import { Question, QuestionDB } from '../interfaces/QuestionsInterface';
+import { AskedQuestion, Question, QuestionDB } from '../interfaces/QuestionsInterface';
 
 async function postQuestion(question: Question): Promise<QuestionDB> {
     const {
@@ -17,4 +17,17 @@ async function postQuestion(question: Question): Promise<QuestionDB> {
     return result.rows[0];
 }
 
-export { postQuestion };
+async function getQuestionById(questionId: number): Promise<AskedQuestion> {
+    const result = await connection.query(`
+        SELECT * FROM questions WHERE id = $1
+    `, [questionId]);
+
+    if (result.rowCount === 0) {
+        return null;
+    }
+
+    delete result.rows[0].id;
+    return result.rows[0];
+}
+
+export { postQuestion, getQuestionById };
