@@ -1,0 +1,17 @@
+#node modules
+node_modules
+
+#ts config
+tsconfig.json
+
+#environment variables
+.env
+.env.development
+.env.test
+
+#eslint
+.eslintrc.json
+.eslintignore
+
+#husky
+.husky
