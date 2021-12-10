@@ -4,14 +4,12 @@ import * as questionsServices from '../services/questionsServices';
 
 async function postQuestion(req: Request, res: Response, next: NextFunction) {
     try {
-        const { question, student, class: questionClass, tags } = req.body;
-
-        const questionValidation = validateQuestion({ question, student, class: questionClass, tags });
+        const questionValidation = validateQuestion(req.body);
         if (!questionValidation.isValid) {
             return res.status(400).send(questionValidation.error);
         }
-        
-        const questionId = await questionsServices.postQuestion({ question, student, class: questionClass, tags });
+
+        const questionId = await questionsServices.postQuestion(req.body);
         return res.send(questionId);
     } catch (error) {
         return next(error);
