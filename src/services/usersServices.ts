@@ -17,7 +17,6 @@ async function postUser(user: User): Promise<string> {
     };
 
     const respondedToken = await usersRepositories.postUser(userWithToken);
-    console.log(respondedToken);
     return respondedToken;
 }
 
