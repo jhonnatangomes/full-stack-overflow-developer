@@ -81,4 +81,22 @@ async function answerQuestion(req: Request, res: Response, next: NextFunction) {
     }
 }
 
-export { postQuestion, getQuestionById, answerQuestion };
+async function getAllUnansweredQuestions(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    try {
+        const questions = await questionsServices.getAllUnansweredQuestions();
+        return res.send(questions);
+    } catch (error) {
+        return next(error);
+    }
+}
+
+export {
+    postQuestion,
+    getQuestionById,
+    answerQuestion,
+    getAllUnansweredQuestions,
+};

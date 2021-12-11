@@ -61,4 +61,14 @@ async function answerQuestion(
     return answeredQuestion.answer;
 }
 
-export { postQuestion, getQuestionById, answerQuestion };
+async function getAllUnansweredQuestions(): Promise<Question[]> {
+    const questions = await questionsRepositories.getAllUnansweredQuestions();
+    return questions;
+}
+
+export {
+    postQuestion,
+    getQuestionById,
+    answerQuestion,
+    getAllUnansweredQuestions,
+};

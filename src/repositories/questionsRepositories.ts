@@ -52,4 +52,19 @@ async function answerQuestion(
     return result.rows[0];
 }
 
-export { postQuestion, getQuestionById, answerQuestion };
+async function getAllUnansweredQuestions(): Promise<Question[]> {
+    const result = await connection.query(`
+        SELECT id, question, student, class, "submittedAt"
+        FROM questions
+        WHERE answered = false
+    `);
+
+    return result.rows;
+}
+
+export {
+    postQuestion,
+    getQuestionById,
+    answerQuestion,
+    getAllUnansweredQuestions,
+};
