@@ -25,6 +25,7 @@ async function getQuestionById(questionId: number): Promise<AskedQuestion> {
     }
 
     delete result.score;
+    delete result.id;
     return result;
 }
 
