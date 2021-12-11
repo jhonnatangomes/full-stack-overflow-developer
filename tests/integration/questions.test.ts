@@ -45,6 +45,11 @@ describe('get /questions/:id', () => {
         await cleanDatabase();
     });
 
+    it('returns 400 when provided id is not a number', async () => {
+        const result = await agent.get(`/questions/${stringFactory()}`);
+        expect(result.status).toEqual(400);
+    });
+
     it('returns 404 for non-existent question in database', async () => {
         const result = await agent.get('/questions/1');
         expect(result.status).toEqual(404);
