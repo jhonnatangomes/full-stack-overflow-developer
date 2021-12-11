@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import APIError from '../errors/APIError';
-import { AskedQuestion, Question } from '../interfaces/QuestionsInterface';
+import { Question } from '../interfaces/QuestionsInterface';
 import * as questionsRepositories from '../repositories/questionsRepositories';
 
 async function postQuestion(question: Question): Promise<number> {
@@ -8,7 +8,7 @@ async function postQuestion(question: Question): Promise<number> {
     return result.id;
 }
 
-async function getQuestionById(questionId: number): Promise<AskedQuestion> {
+async function getQuestionById(questionId: number): Promise<Question> {
     const result = await questionsRepositories.getQuestionById(questionId);
 
     if (result === null) {

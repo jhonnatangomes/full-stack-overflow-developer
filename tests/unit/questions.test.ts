@@ -1,10 +1,6 @@
 import * as questionsServices from '../../src/services/questionsServices';
 import * as questionsRepositories from '../../src/repositories/questionsRepositories';
-import {
-    AskedQuestion,
-    Question,
-    QuestionDB,
-} from '../../src/interfaces/QuestionsInterface';
+import { Question } from '../../src/interfaces/QuestionsInterface';
 import APIError from '../../src/errors/APIError';
 
 const sut = questionsServices;
@@ -17,7 +13,7 @@ describe('post question', () => {
         tags: 'as',
     };
 
-    const mockedResponse: QuestionDB = {
+    const mockedResponse: Question = {
         id: 1,
         ...mockedQuestion,
     };
@@ -38,7 +34,7 @@ describe('get question by id', () => {
         'getQuestionById'
     );
 
-    const answeredQuestion: AskedQuestion = {
+    const answeredQuestion: Question = {
         question: 'Uki ta contecendo?',
         student: 'Zoru',
         class: 'T3',
@@ -50,7 +46,7 @@ describe('get question by id', () => {
         answer: 'É mais de 8 miiiil!',
     };
 
-    const unansweredQuestion: AskedQuestion = {
+    const unansweredQuestion: Question = {
         ...answeredQuestion,
         answered: false,
     };
