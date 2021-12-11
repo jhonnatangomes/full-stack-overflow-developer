@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import validateQuestion from '../validations/validateQuestion';
 import * as questionsServices from '../services/questionsServices';
 import { ValidationResponse } from '../interfaces/ValidationsInterface';
-import validateAnswer from '../validations/validateAnswer';
+import validateToken from '../validations/validateToken';
 
 async function postQuestion(req: Request, res: Response, next: NextFunction) {
     try {
@@ -53,12 +53,12 @@ async function answerQuestion(req: Request, res: Response, next: NextFunction) {
             return res.sendStatus(401);
         }
 
-        const answerValidation: ValidationResponse = validateAnswer(answer);
-        if (!answerValidation.isValid) {
-            return res.status(400).send(answerValidation.error);
+        const tokenValidation: ValidationResponse = validateToken(token);
+        if (!tokenValidation.isValid) {
+            return res.status(401).send(tokenValidation.error);
         }
 
-        if (!answer || typeof answer !== 'string') {
+        if (!answer) {
             return res.status(400).send('answer is required');
         }
 
@@ -67,7 +67,9 @@ async function answerQuestion(req: Request, res: Response, next: NextFunction) {
             answer,
             token
         );
-        return res.send(result);
+        return res.send({
+            answer: result,
+        });
     } catch (error) {
         if (error.type === 'NotFound') {
             return res.status(404).send(error.message);
