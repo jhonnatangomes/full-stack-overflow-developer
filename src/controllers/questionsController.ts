@@ -11,7 +11,9 @@ async function postQuestion(req: Request, res: Response, next: NextFunction) {
         }
 
         const questionId: number = await questionsServices.postQuestion(req.body);
-        return res.send(questionId.toString());
+        return res.send({
+            id: questionId
+        });
     } catch (error) {
         return next(error);
     }
