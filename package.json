@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "NODE_ENV=development npx nodemon --watch 'src/' --exec 'ts-node src/server.ts' -e ts"
+    "start:dev": "NODE_ENV=development npx nodemon --watch 'src/' --exec 'ts-node src/server.ts' -e ts",
+    "test": "npx jest -i",
+    "test:watch": "npx jest -i --watch"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +14,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/faker": "^5.5.9",
     "@types/jest": "^27.0.3",
     "@types/pg": "^8.6.1",
     "@types/supertest": "^2.0.11",
@@ -22,6 +24,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
+    "faker": "^5.5.3",
     "husky": "^7.0.4",
     "ntl": "^5.1.0",
     "ts-jest": "^27.1.1",
