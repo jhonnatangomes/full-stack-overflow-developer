@@ -15,6 +15,9 @@ async function getQuestionById(questionId: number): Promise<AskedQuestion> {
         throw new APIError('question doesnt exist', 'NotFound');
     }
 
+    result.submittedAt = dayjs(result.submittedAt).format('YYYY-MM-DD HH:mm');
+    result.answeredAt = dayjs(result.answeredAt).format('YYYY-MM-DD HH:mm');
+
     if (!result.answered) {
         delete result.answeredAt;
         delete result.answeredBy;
@@ -22,8 +25,6 @@ async function getQuestionById(questionId: number): Promise<AskedQuestion> {
     }
 
     delete result.score;
-    result.submittedAt = dayjs(result.submittedAt).format('YYYY-MM-DD HH:mm');
-    result.answeredAt = dayjs(result.answeredAt).format('YYYY-MM-DD HH:mm');
     return result;
 }
 
