@@ -127,3 +127,39 @@ describe('answer question', () => {
         expect(result).toEqual(answeredQuestion.answer);
     });
 });
+
+describe('get all unanswered questions', () => {
+    const questions = [
+        {
+            id: 1,
+            question: 'oi',
+            student: 'a',
+            class: 't2',
+            submittedAt: '2021-12-11 19:02',
+        },
+        {
+            id: 2,
+            question: 'oi',
+            student: 'a',
+            class: 't2',
+            submittedAt: '2021-12-11 19:02',
+        },
+        {
+            id: 3,
+            question: 'oi',
+            student: 'a',
+            class: 't2',
+            submittedAt: '2021-12-11 19:02',
+        },
+    ];
+
+    jest.spyOn(
+        questionsRepositories,
+        'getAllUnansweredQuestions'
+    ).mockImplementation(async () => questions);
+
+    it('returns an array of questions', async () => {
+        const result = await sut.getAllUnansweredQuestions();
+        expect(result).toEqual(questions);
+    });
+});

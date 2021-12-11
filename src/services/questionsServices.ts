@@ -63,7 +63,13 @@ async function answerQuestion(
 
 async function getAllUnansweredQuestions(): Promise<Question[]> {
     const questions = await questionsRepositories.getAllUnansweredQuestions();
-    return questions;
+
+    const questionsWithFormattedDate = questions.map((question) => ({
+        ...question,
+        submittedAt: dayjs(question.submittedAt).format('YYYY-MM-DD HH:mm'),
+    }));
+
+    return questionsWithFormattedDate;
 }
 
 export {

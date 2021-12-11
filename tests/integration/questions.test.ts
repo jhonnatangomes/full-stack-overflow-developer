@@ -132,3 +132,25 @@ describe('post /questions/:id', () => {
         expect(result.body.answer).toEqual(answer);
     });
 });
+
+describe('get /questions', () => {
+    let question: Question;
+
+    beforeAll(async () => {
+        await cleanDatabase();
+        question = await createUnansweredQuestion();
+        await createUnansweredQuestion();
+        await createUnansweredQuestion();
+    });
+
+    it('returns 200 and an array of unanswered questions', async () => {
+        const result = await agent.get('/questions');
+        expect(result.status).toEqual(200);
+        expect(result.body.length).toEqual(3);
+        expect(result.body[0].id).toEqual(question.id);
+        expect(result.body[0].question).toEqual(question.question);
+        expect(result.body[0].student).toEqual(question.student);
+        expect(result.body[0].class).toEqual(question.class);
+        expect(result.body[0].submittedAt).toEqual(question.submittedAt);
+    });
+});
