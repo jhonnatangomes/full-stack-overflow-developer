@@ -9,4 +9,4 @@ async function getQuestionById(questionId: number): Promise<QuestionDB> {
     return result.rows[0];
 }
 
-export {getQuestionById}
+export { getQuestionById };

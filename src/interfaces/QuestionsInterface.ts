@@ -16,6 +16,7 @@ interface AskedQuestion extends Question {
     answeredBy?: string;
     answer?: string;
     score?: number;
+    id?: number;
 }
 
 export { Question, QuestionDB, AskedQuestion };
