@@ -35,4 +35,21 @@ async function getQuestionById(questionId: number): Promise<Question> {
     return result.rows[0];
 }
 
-export { postQuestion, getQuestionById };
+async function answerQuestion(
+    answer: string,
+    answeredBy: string,
+    questionId: number
+): Promise<Question> {
+    const result = await connection.query(
+        `
+        UPDATE questions SET answer = $1, "answeredBy" = $2, "answeredAt" = now(), answered = true
+        WHERE id = $3 
+        RETURNING *;
+    `,
+        [answer, answeredBy, questionId]
+    );
+
+    return result.rows[0];
+}
+
+export { postQuestion, getQuestionById, answerQuestion };

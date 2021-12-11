@@ -1,13 +1,20 @@
 import connection from '../database';
 import User from '../interfaces/UserInterface';
 
-async function getUserByName(name: string): Promise<User> {
-    const result = await connection.query(
-        `
-        SELECT * FROM users WHERE name = $1
-    `,
-        [name]
-    );
+async function getUserByColumn(
+    searchParam: string,
+    columnName: string
+): Promise<User> {
+    let baseQuery = 'SELECT * FROM users';
+
+    if (columnName === 'name') {
+        baseQuery += ' WHERE name = $1';
+    }
+    if (columnName === 'token') {
+        baseQuery += ' WHERE token = $1';
+    }
+
+    const result = await connection.query(baseQuery, [searchParam]);
 
     if (result.rowCount === 0) {
         return null;
@@ -30,4 +37,4 @@ async function postUser(user: User): Promise<string> {
     return result.rows[0].token;
 }
 
-export { getUserByName, postUser };
+export { getUserByColumn, postUser };

@@ -11,7 +11,7 @@ jest.mock('uuid');
 const mockedUuid = mocked(uuid, true);
 
 describe('post user', () => {
-    const getUserByName = jest.spyOn(usersRepositories, 'getUserByName');
+    const getUserByColumn = jest.spyOn(usersRepositories, 'getUserByColumn');
     const user: User = {
         name: '',
         class: '',
@@ -19,14 +19,14 @@ describe('post user', () => {
     };
 
     it('throws error when user already exists', async () => {
-        getUserByName.mockImplementationOnce(async () => user);
+        getUserByColumn.mockImplementationOnce(async () => user);
 
         const result = sut.postUser(user);
         await expect(result).rejects.toThrow(APIError);
     });
 
     it('returns token when user doesnt exist', async () => {
-        getUserByName.mockImplementationOnce(() => null);
+        getUserByColumn.mockImplementationOnce(() => null);
         mockedUuid.mockImplementationOnce(() => 'token');
         jest.spyOn(usersRepositories, 'postUser').mockImplementation(
             async () => 'token'
