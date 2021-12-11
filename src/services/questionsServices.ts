@@ -20,9 +20,10 @@ async function getQuestionById(questionId: number): Promise<AskedQuestion> {
         delete result.answeredBy;
         delete result.answer;
     }
-    
+
     delete result.score;
-    result.submittedAt = dayjs(result.submittedAt).format('YYYY-MM-DD HH:mm')
+    result.submittedAt = dayjs(result.submittedAt).format('YYYY-MM-DD HH:mm');
+    result.answeredAt = dayjs(result.answeredAt).format('YYYY-MM-DD HH:mm');
     return result;
 }
 
