@@ -12,6 +12,7 @@ import {
     incorrectQuestion,
 } from '../factories/questionFactory';
 import {
+    alphaNumericFactory,
     createUser,
     stringFactory,
     tokenFactory,
@@ -46,7 +47,7 @@ describe('get /questions/:id', () => {
     });
 
     it('returns 400 when provided id is not a number', async () => {
-        const result = await agent.get(`/questions/${stringFactory()}`);
+        const result = await agent.get(`/questions/${alphaNumericFactory()}`);
         expect(result.status).toEqual(400);
     });
 
@@ -80,6 +81,11 @@ describe('post /questions/:id', () => {
 
     beforeAll(async () => {
         await cleanDatabase();
+    });
+
+    it('returns 400 when id sent is not a number', async () => {
+        const result = await agent.post(`/questions/${alphaNumericFactory()}`);
+        expect(result.status).toEqual(400);
     });
 
     it('returns 401 for no token sent', async () => {

@@ -49,9 +49,15 @@ async function getQuestionById(
 
 async function answerQuestion(req: Request, res: Response, next: NextFunction) {
     try {
-        const { id: questionId } = req.params;
+        const { id } = req.params;
         const { answer } = req.body;
         const token = req.headers.authorization?.replace('Bearer ', '');
+
+        const questionId = Number(id);
+
+        if (Number.isNaN(questionId)) {
+            return res.status(400).send('id must be a number');
+        }
 
         if (!token) {
             return res.sendStatus(401);
@@ -67,7 +73,7 @@ async function answerQuestion(req: Request, res: Response, next: NextFunction) {
         }
 
         const result = await questionsServices.answerQuestion(
-            Number(questionId),
+            questionId,
             answer,
             token
         );
