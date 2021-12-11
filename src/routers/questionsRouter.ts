@@ -6,5 +6,6 @@ const router = Router();
 router.post('', questionsController.postQuestion);
 router.get('/:id', questionsController.getQuestionById);
 router.post('/:id', questionsController.answerQuestion);
+router.get('', questionsController.getAllUnansweredQuestions);
 
 export default router;

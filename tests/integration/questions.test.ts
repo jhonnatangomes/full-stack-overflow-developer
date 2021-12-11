@@ -12,6 +12,7 @@ import {
     incorrectQuestion,
 } from '../factories/questionFactory';
 import {
+    alphaNumericFactory,
     createUser,
     stringFactory,
     tokenFactory,
@@ -45,6 +46,11 @@ describe('get /questions/:id', () => {
         await cleanDatabase();
     });
 
+    it('returns 400 when provided id is not a number', async () => {
+        const result = await agent.get(`/questions/${alphaNumericFactory()}`);
+        expect(result.status).toEqual(400);
+    });
+
     it('returns 404 for non-existent question in database', async () => {
         const result = await agent.get('/questions/1');
         expect(result.status).toEqual(404);
@@ -75,6 +81,11 @@ describe('post /questions/:id', () => {
 
     beforeAll(async () => {
         await cleanDatabase();
+    });
+
+    it('returns 400 when id sent is not a number', async () => {
+        const result = await agent.post(`/questions/${alphaNumericFactory()}`);
+        expect(result.status).toEqual(400);
     });
 
     it('returns 401 for no token sent', async () => {
@@ -130,5 +141,27 @@ describe('post /questions/:id', () => {
             .send({ answer });
         expect(result.status).toEqual(200);
         expect(result.body.answer).toEqual(answer);
+    });
+});
+
+describe('get /questions', () => {
+    let question: Question;
+
+    beforeAll(async () => {
+        await cleanDatabase();
+        question = await createUnansweredQuestion();
+        await createUnansweredQuestion();
+        await createUnansweredQuestion();
+    });
+
+    it('returns 200 and an array of unanswered questions', async () => {
+        const result = await agent.get('/questions');
+        expect(result.status).toEqual(200);
+        expect(result.body.length).toEqual(3);
+        expect(result.body[0].id).toEqual(question.id);
+        expect(result.body[0].question).toEqual(question.question);
+        expect(result.body[0].student).toEqual(question.student);
+        expect(result.body[0].class).toEqual(question.class);
+        expect(result.body[0].submittedAt).toEqual(question.submittedAt);
     });
 });

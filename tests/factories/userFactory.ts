@@ -42,4 +42,15 @@ function tokenFactory() {
     return faker.datatype.uuid();
 }
 
-export { incorrectUser, correctUser, createUser, stringFactory, tokenFactory };
+function alphaNumericFactory() {
+    return faker.random.alphaNumeric(15);
+}
+
+export {
+    incorrectUser,
+    correctUser,
+    createUser,
+    stringFactory,
+    tokenFactory,
+    alphaNumericFactory,
+};

@@ -30,10 +30,14 @@ async function getQuestionById(
     next: NextFunction
 ) {
     try {
-        const { id: questionId } = req.params;
-        const result = await questionsServices.getQuestionById(
-            Number(questionId)
-        );
+        const { id } = req.params;
+        const questionId = Number(id);
+
+        if (Number.isNaN(questionId)) {
+            return res.status(400).send('id must be a number');
+        }
+
+        const result = await questionsServices.getQuestionById(questionId);
         return res.send(result);
     } catch (error) {
         if (error.type === 'NotFound') {
@@ -45,9 +49,15 @@ async function getQuestionById(
 
 async function answerQuestion(req: Request, res: Response, next: NextFunction) {
     try {
-        const { id: questionId } = req.params;
+        const { id } = req.params;
         const { answer } = req.body;
         const token = req.headers.authorization?.replace('Bearer ', '');
+
+        const questionId = Number(id);
+
+        if (Number.isNaN(questionId)) {
+            return res.status(400).send('id must be a number');
+        }
 
         if (!token) {
             return res.sendStatus(401);
@@ -63,7 +73,7 @@ async function answerQuestion(req: Request, res: Response, next: NextFunction) {
         }
 
         const result = await questionsServices.answerQuestion(
-            Number(questionId),
+            questionId,
             answer,
             token
         );
@@ -81,4 +91,22 @@ async function answerQuestion(req: Request, res: Response, next: NextFunction) {
     }
 }
 
-export { postQuestion, getQuestionById, answerQuestion };
+async function getAllUnansweredQuestions(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    try {
+        const questions = await questionsServices.getAllUnansweredQuestions();
+        return res.send(questions);
+    } catch (error) {
+        return next(error);
+    }
+}
+
+export {
+    postQuestion,
+    getQuestionById,
+    answerQuestion,
+    getAllUnansweredQuestions,
+};
