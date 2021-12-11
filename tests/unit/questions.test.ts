@@ -1,7 +1,9 @@
 import * as questionsServices from '../../src/services/questionsServices';
 import * as questionsRepositories from '../../src/repositories/questionsRepositories';
+import * as usersRepositories from '../../src/repositories/usersRepositories';
 import { Question } from '../../src/interfaces/QuestionsInterface';
 import APIError from '../../src/errors/APIError';
+import User from '../../src/interfaces/UserInterface';
 
 const sut = questionsServices;
 
@@ -69,5 +71,59 @@ describe('get question by id', () => {
         getQuestionById.mockImplementationOnce(async () => answeredQuestion);
         const result = await sut.getQuestionById(1);
         expect(result).toEqual(answeredQuestion);
+    });
+});
+
+describe('answer question', () => {
+    const getUserByColumn = jest.spyOn(usersRepositories, 'getUserByColumn');
+    const getQuestionById = jest.spyOn(
+        questionsRepositories,
+        'getQuestionById'
+    );
+    const answerQuestion = jest.spyOn(questionsRepositories, 'answerQuestion');
+    const user: User = {
+        name: '',
+        class: '',
+        token: '',
+    };
+
+    const answeredQuestion: Question = {
+        question: '',
+        student: '',
+        class: '',
+        answered: true,
+        answer: 'respondido',
+    };
+
+    const unansweredQuestion: Question = {
+        ...answeredQuestion,
+        answered: false,
+    };
+
+    it('throws error when user doesnt exist', async () => {
+        getUserByColumn.mockImplementationOnce(() => null);
+        const result = sut.answerQuestion(1, 'a', 'a');
+        await expect(result).rejects.toThrow(APIError);
+    });
+
+    it('throws error if question doesnt exist', async () => {
+        getUserByColumn.mockImplementation(async () => user);
+        getQuestionById.mockImplementationOnce(() => null);
+
+        const result = sut.answerQuestion(1, 'a', 'a');
+        await expect(result).rejects.toThrow(APIError);
+    });
+
+    it('throws error if question is answered', async () => {
+        getQuestionById.mockImplementationOnce(async () => answeredQuestion);
+        const result = sut.answerQuestion(1, 'a', 'a');
+        await expect(result).rejects.toThrow(APIError);
+    });
+
+    it('registers answer and returns it', async () => {
+        getQuestionById.mockImplementationOnce(async () => unansweredQuestion);
+        answerQuestion.mockImplementation(async () => answeredQuestion);
+        const result = await sut.answerQuestion(1, 'a', 'a');
+        expect(result).toEqual(answeredQuestion.answer);
     });
 });
