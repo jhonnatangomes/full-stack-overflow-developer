@@ -49,6 +49,8 @@ async function createAnsweredQuestion(): Promise<AskedQuestion> {
         class: faker.datatype.string(),
         tags: faker.datatype.string(),
         answered: true,
+        submittedAt: faker.date.past(),
+        answeredAt: faker.date.future(),
         answeredBy: faker.name.findName(),
         answer: faker.datatype.string(),
     };
@@ -57,7 +59,7 @@ async function createAnsweredQuestion(): Promise<AskedQuestion> {
         `
         INSERT INTO questions
         (question, student, class, tags, answered, "submittedAt", "answeredAt", "answeredBy", answer)
-        VALUES ($1, $2, $3, $4, $5, now(), now(), $6, $7) RETURNING *;
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;
     `,
         [
             question.question,
@@ -65,6 +67,8 @@ async function createAnsweredQuestion(): Promise<AskedQuestion> {
             question.class,
             question.tags,
             question.answered,
+            question.submittedAt,
+            question.answeredAt,
             question.answeredBy,
             question.answer,
         ]

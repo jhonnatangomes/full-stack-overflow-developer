@@ -69,7 +69,9 @@ describe('get /questions/:id', () => {
         expect(result.body.submittedAt).toEqual(
             dayjs(question.submittedAt).format('YYYY-MM-DD HH:mm')
         );
-        expect(result.body.answeredAt).toEqual(question.answeredAt);
+        expect(result.body.answeredAt).toEqual(
+            dayjs(question.answeredAt).format('YYYY-MM-DD HH:mm')
+        );
         expect(result.body.answeredBy).toEqual(question.answeredBy);
         expect(result.body.answer).toEqual(question.answer);
     });
