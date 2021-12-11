@@ -1,6 +1,5 @@
 import supertest from 'supertest';
 import app from '../../src/app';
-import dayjs from 'dayjs';
 import { cleanDatabase, endConnection } from '../database/connection';
 import { getQuestionById } from '../database/questions';
 
@@ -13,7 +12,8 @@ import {
 
 const agent = supertest(app);
 
-afterAll(() => {
+afterAll(async () => {
+    await cleanDatabase();
     endConnection();
 });
 
@@ -34,8 +34,8 @@ describe('post /questions', () => {
 });
 
 describe('get /questions/:id', () => {
-    beforeAll(() => {
-        cleanDatabase();
+    beforeAll(async () => {
+        await cleanDatabase();
     });
 
     it('returns 404 for non-existent question in database', async () => {

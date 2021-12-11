@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 
 import questionsRouter from './routers/questionsRouter';
-import { postUser } from './controllers/userController';
+import { postUser } from './controllers/usersController';
 import errorMiddleware from './middlewares/error';
 
 const app = express();

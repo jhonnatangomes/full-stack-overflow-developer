@@ -15,6 +15,9 @@ async function postUser(req: Request, res: Response, next: NextFunction) {
             token,
         });
     } catch (error) {
+        if (error.type === 'Conflict') {
+            return res.sendStatus(409);
+        }
         return next(error);
     }
 }
