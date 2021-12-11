@@ -1,5 +1,7 @@
 import supertest from 'supertest';
 import app from '../../src/app';
+import { Question } from '../../src/interfaces/QuestionsInterface';
+import User from '../../src/interfaces/UserInterface';
 import { cleanDatabase, endConnection } from '../database/connection';
 import { getQuestionById } from '../database/questions';
 
@@ -9,6 +11,11 @@ import {
     createUnansweredQuestion,
     incorrectQuestion,
 } from '../factories/questionFactory';
+import {
+    createUser,
+    stringFactory,
+    tokenFactory,
+} from '../factories/userFactory';
 
 const agent = supertest(app);
 
@@ -57,5 +64,71 @@ describe('get /questions/:id', () => {
         delete question.id;
         expect(result.status).toEqual(200);
         expect(result.body).toEqual(question);
+    });
+});
+
+describe('post /questions/:id', () => {
+    const incorrectToken: string = tokenFactory();
+    const answer: string = stringFactory();
+    let user: User;
+    let question: Question;
+
+    beforeAll(async () => {
+        await cleanDatabase();
+    });
+
+    it('returns 401 for no token sent', async () => {
+        const result = await agent.post('/questions/1');
+        expect(result.status).toEqual(401);
+    });
+
+    it('returns 401 for non-uuid token', async () => {
+        const result = await agent
+            .post('/questions/1')
+            .set('Authorization', `Bearer ${stringFactory()}`);
+        expect(result.status).toEqual(401);
+    });
+
+    it('returns 400 for no answer provided', async () => {
+        const result = await agent
+            .post('/questions/1')
+            .set('Authorization', `Bearer ${incorrectToken}`);
+        expect(result.status).toEqual(400);
+    });
+
+    it('returns 404 for no user corresponding to token', async () => {
+        const result = await agent
+            .post('/questions/1')
+            .set('Authorization', `Bearer ${incorrectToken}`)
+            .send({ answer });
+        expect(result.status).toEqual(404);
+    });
+
+    it('returns 404 when question doesnt exist', async () => {
+        user = await createUser();
+        const result = await agent
+            .post('/questions/1')
+            .set('Authorization', `Bearer ${user.token}`)
+            .send({ answer });
+        expect(result.status).toEqual(404);
+    });
+
+    it('returns 409 when question is already answered', async () => {
+        question = await createAnsweredQuestion();
+        const result = await agent
+            .post(`/questions/${question.id}`)
+            .set('Authorization', `Bearer ${user.token}`)
+            .send({ answer });
+        expect(result.status).toEqual(409);
+    });
+
+    it('returns 200 and the answer sent', async () => {
+        question = await createUnansweredQuestion();
+        const result = await agent
+            .post(`/questions/${question.id}`)
+            .set('Authorization', `Bearer ${user.token}`)
+            .send({ answer });
+        expect(result.status).toEqual(200);
+        expect(result.body.answer).toEqual(answer);
     });
 });

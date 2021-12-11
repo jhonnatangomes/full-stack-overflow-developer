@@ -4,7 +4,10 @@ import * as usersRepositories from '../repositories/usersRepositories';
 import APIError from '../errors/APIError';
 
 async function postUser(user: User): Promise<string> {
-    const userResult = await usersRepositories.getUserByName(user.name);
+    const userResult = await usersRepositories.getUserByColumn(
+        user.name,
+        'name'
+    );
 
     if (userResult !== null) {
         throw new APIError('username already exists', 'Conflict');

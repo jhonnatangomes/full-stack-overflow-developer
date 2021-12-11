@@ -1,11 +1,7 @@
 import connection from '../database';
-import {
-    AskedQuestion,
-    Question,
-    QuestionDB,
-} from '../interfaces/QuestionsInterface';
+import { Question } from '../interfaces/QuestionsInterface';
 
-async function postQuestion(question: Question): Promise<QuestionDB> {
+async function postQuestion(question: Question): Promise<Question> {
     const {
         question: questionName,
         student,
@@ -24,7 +20,7 @@ async function postQuestion(question: Question): Promise<QuestionDB> {
     return result.rows[0];
 }
 
-async function getQuestionById(questionId: number): Promise<AskedQuestion> {
+async function getQuestionById(questionId: number): Promise<Question> {
     const result = await connection.query(
         `
         SELECT * FROM questions WHERE id = $1
@@ -39,4 +35,21 @@ async function getQuestionById(questionId: number): Promise<AskedQuestion> {
     return result.rows[0];
 }
 
-export { postQuestion, getQuestionById };
+async function answerQuestion(
+    answer: string,
+    answeredBy: string,
+    questionId: number
+): Promise<Question> {
+    const result = await connection.query(
+        `
+        UPDATE questions SET answer = $1, "answeredBy" = $2, "answeredAt" = now(), answered = true
+        WHERE id = $3 
+        RETURNING *;
+    `,
+        [answer, answeredBy, questionId]
+    );
+
+    return result.rows[0];
+}
+
+export { postQuestion, getQuestionById, answerQuestion };

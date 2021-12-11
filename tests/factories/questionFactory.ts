@@ -1,10 +1,7 @@
 import faker from 'faker';
 import dayjs from 'dayjs';
 import connection from '../../src/database';
-import {
-    AskedQuestion,
-    Question,
-} from '../../src/interfaces/QuestionsInterface';
+import { Question } from '../../src/interfaces/QuestionsInterface';
 
 function incorrectQuestion() {
     return {
@@ -24,7 +21,7 @@ function correctQuestion(): Question {
     };
 }
 
-async function createUnansweredQuestion(): Promise<AskedQuestion> {
+async function createUnansweredQuestion(): Promise<Question> {
     const question = {
         question: faker.datatype.string(),
         student: faker.datatype.string(),
@@ -52,7 +49,7 @@ async function createUnansweredQuestion(): Promise<AskedQuestion> {
     return result.rows[0];
 }
 
-async function createAnsweredQuestion(): Promise<AskedQuestion> {
+async function createAnsweredQuestion(): Promise<Question> {
     const question = {
         question: faker.datatype.string(),
         student: faker.name.findName(),
