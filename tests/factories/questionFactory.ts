@@ -1,4 +1,5 @@
 import faker from 'faker';
+import dayjs from 'dayjs';
 import connection from '../../src/database';
 import {
     AskedQuestion,
@@ -39,6 +40,15 @@ async function createUnansweredQuestion(): Promise<AskedQuestion> {
         [question.question, question.student, question.class, question.tags]
     );
 
+    result.rows[0].submittedAt = dayjs(result.rows[0].submittedAt).format(
+        'YYYY-MM-DD HH:mm'
+    );
+
+    delete result.rows[0].answeredAt;
+    delete result.rows[0].answeredBy;
+    delete result.rows[0].answer;
+    delete result.rows[0].score;
+
     return result.rows[0];
 }
 
@@ -73,6 +83,15 @@ async function createAnsweredQuestion(): Promise<AskedQuestion> {
             question.answer,
         ]
     );
+
+    result.rows[0].submittedAt = dayjs(result.rows[0].submittedAt).format(
+        'YYYY-MM-DD HH:mm'
+    );
+    result.rows[0].answeredAt = dayjs(result.rows[0].answeredAt).format(
+        'YYYY-MM-DD HH:mm'
+    );
+
+    delete result.rows[0].score;
 
     return result.rows[0];
 }
