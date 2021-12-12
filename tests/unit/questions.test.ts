@@ -3,7 +3,7 @@ import * as questionsRepositories from '../../src/repositories/questionsReposito
 import * as usersRepositories from '../../src/repositories/usersRepositories';
 import { Question } from '../../src/interfaces/QuestionsInterface';
 import APIError from '../../src/errors/APIError';
-import User from '../../src/interfaces/UserInterface';
+import { User } from '../../src/interfaces/UserInterface';
 
 const sut = questionsServices;
 

@@ -1,6 +1,6 @@
 import faker from 'faker';
 import connection from '../../src/database';
-import User from '../../src/interfaces/UserInterface';
+import { User } from '../../src/interfaces/UserInterface';
 
 function incorrectUser() {
     return {
@@ -46,6 +46,10 @@ function alphaNumericFactory() {
     return faker.random.alphaNumeric(15);
 }
 
+function nameFactory() {
+    return faker.name.findName();
+}
+
 export {
     incorrectUser,
     correctUser,
@@ -53,4 +57,5 @@ export {
     stringFactory,
     tokenFactory,
     alphaNumericFactory,
+    nameFactory,
 };

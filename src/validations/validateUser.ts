@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import User from '../interfaces/UserInterface';
+import { User } from '../interfaces/UserInterface';
 
 const schema = Joi.object({
     name: Joi.string().required(),

@@ -1,5 +1,5 @@
 import connection from '../../src/database';
-import User from '../../src/interfaces/UserInterface';
+import { User } from '../../src/interfaces/UserInterface';
 
 async function getUserByName(name: string): Promise<User> {
     const result = await connection.query(

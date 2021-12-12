@@ -1,6 +1,6 @@
 import * as usersServices from '../../src/services/usersServices';
 import * as usersRepositories from '../../src/repositories/usersRepositories';
-import User from '../../src/interfaces/UserInterface';
+import { User } from '../../src/interfaces/UserInterface';
 import APIError from '../../src/errors/APIError';
 import { v4 as uuid } from 'uuid';
 import { mocked } from 'jest-mock';

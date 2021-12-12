@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import User from '../interfaces/UserInterface';
+import { User } from '../interfaces/UserInterface';
 import * as usersRepositories from '../repositories/usersRepositories';
 import APIError from '../errors/APIError';
 
