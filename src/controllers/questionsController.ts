@@ -104,9 +104,41 @@ async function getAllUnansweredQuestions(
     }
 }
 
+async function voteQuestion(req: Request, res: Response, next: NextFunction) {
+    try {
+        const { id } = req.params;
+        const questionId = Number(id);
+
+        if (Number.isNaN(questionId)) {
+            return res.status(400).send('id must be a number');
+        }
+
+        let score: number;
+        if (req.url.includes('up-vote')) {
+            score = await questionsServices.voteQuestion(questionId, 'upvote');
+        }
+        if (req.url.includes('down-vote')) {
+            score = await questionsServices.voteQuestion(
+                questionId,
+                'downvote'
+            );
+        }
+
+        return res.send({
+            score,
+        });
+    } catch (error) {
+        if (error.type === 'NotFound') {
+            return res.status(404).send(error.message);
+        }
+        return next(error);
+    }
+}
+
 export {
     postQuestion,
     getQuestionById,
     answerQuestion,
     getAllUnansweredQuestions,
+    voteQuestion,
 };

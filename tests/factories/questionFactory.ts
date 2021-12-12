@@ -44,7 +44,6 @@ async function createUnansweredQuestion(): Promise<Question> {
     delete result.rows[0].answeredAt;
     delete result.rows[0].answeredBy;
     delete result.rows[0].answer;
-    delete result.rows[0].score;
 
     return result.rows[0];
 }
@@ -87,8 +86,6 @@ async function createAnsweredQuestion(answeredBy?: string): Promise<Question> {
     result.rows[0].answeredAt = dayjs(result.rows[0].answeredAt).format(
         'YYYY-MM-DD HH:mm'
     );
-
-    delete result.rows[0].score;
 
     return result.rows[0];
 }

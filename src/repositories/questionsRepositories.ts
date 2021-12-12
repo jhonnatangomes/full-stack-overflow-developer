@@ -70,10 +70,34 @@ async function getAllQuestions(): Promise<Question[]> {
     return result.rows;
 }
 
+async function voteQuestion(
+    questionId: number,
+    voteType: string
+): Promise<Question> {
+    let baseQuery = 'UPDATE questions';
+    if (voteType === 'upvote') {
+        baseQuery += ' SET score = score + 1';
+    }
+    if (voteType === 'downvote') {
+        baseQuery += ' SET score = score - 1';
+    }
+
+    baseQuery += ' WHERE id = $1 RETURNING *';
+
+    const result = await connection.query(baseQuery, [questionId]);
+
+    if (result.rowCount === 0) {
+        return null;
+    }
+
+    return result.rows[0];
+}
+
 export {
     postQuestion,
     getQuestionById,
     answerQuestion,
     getAllUnansweredQuestions,
     getAllQuestions,
+    voteQuestion,
 };
