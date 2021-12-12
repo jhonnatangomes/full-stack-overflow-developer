@@ -72,9 +72,26 @@ async function getAllUnansweredQuestions(): Promise<Question[]> {
     return questionsWithFormattedDate;
 }
 
+async function voteQuestion(
+    questionId: number,
+    voteType: string
+): Promise<number> {
+    const result = await questionsRepositories.voteQuestion(
+        questionId,
+        voteType
+    );
+
+    if (result === null) {
+        throw new APIError('question doesnt exist', 'NotFound');
+    }
+
+    return result.score;
+}
+
 export {
     postQuestion,
     getQuestionById,
     answerQuestion,
     getAllUnansweredQuestions,
+    voteQuestion,
 };

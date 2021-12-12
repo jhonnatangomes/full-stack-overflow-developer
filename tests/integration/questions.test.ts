@@ -60,6 +60,7 @@ describe('get /questions/:id', () => {
         const question = await createUnansweredQuestion();
         const result = await agent.get(`/questions/${question.id}`);
         delete question.id;
+        delete question.score;
         expect(result.status).toEqual(200);
         expect(result.body).toEqual(question);
     });
@@ -68,6 +69,7 @@ describe('get /questions/:id', () => {
         const question = await createAnsweredQuestion();
         const result = await agent.get(`/questions/${question.id}`);
         delete question.id;
+        delete question.score;
         expect(result.status).toEqual(200);
         expect(result.body).toEqual(question);
     });
@@ -163,5 +165,55 @@ describe('get /questions', () => {
         expect(result.body[0].student).toEqual(question.student);
         expect(result.body[0].class).toEqual(question.class);
         expect(result.body[0].submittedAt).toEqual(question.submittedAt);
+    });
+});
+
+describe('put /questions/:id/up-vote', () => {
+    beforeAll(async () => {
+        await cleanDatabase();
+    });
+
+    it('returns 400 when id sent is not a number', async () => {
+        const result = await agent.put(
+            `/questions/${alphaNumericFactory()}/up-vote`
+        );
+        expect(result.status).toEqual(400);
+    });
+
+    it('returns 404 when question doesnt exist', async () => {
+        const result = await agent.put(`/questions/1/up-vote`);
+        expect(result.status).toEqual(404);
+    });
+
+    it('returns 200 and the score increased', async () => {
+        const question = await createUnansweredQuestion();
+        const result = await agent.put(`/questions/${question.id}/up-vote`);
+        expect(result.status).toEqual(200);
+        expect(result.body.score).toEqual(question.score + 1);
+    });
+});
+
+describe('put /questions/:id/down-vote', () => {
+    beforeAll(async () => {
+        await cleanDatabase();
+    });
+
+    it('returns 400 when id sent is not a number', async () => {
+        const result = await agent.put(
+            `/questions/${alphaNumericFactory()}/down-vote`
+        );
+        expect(result.status).toEqual(400);
+    });
+
+    it('returns 404 when question doesnt exist', async () => {
+        const result = await agent.put(`/questions/1/down-vote`);
+        expect(result.status).toEqual(404);
+    });
+
+    it('returns 200 and the score increased', async () => {
+        const question = await createUnansweredQuestion();
+        const result = await agent.put(`/questions/${question.id}/down-vote`);
+        expect(result.status).toEqual(200);
+        expect(result.body.score).toEqual(question.score - 1);
     });
 });

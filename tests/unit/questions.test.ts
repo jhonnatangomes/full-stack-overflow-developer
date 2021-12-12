@@ -163,3 +163,25 @@ describe('get all unanswered questions', () => {
         expect(result).toEqual(questions);
     });
 });
+
+describe('vote question', () => {
+    const voteQuestion = jest.spyOn(questionsRepositories, 'voteQuestion');
+
+    it('throws error when question doesnt exist', async () => {
+        voteQuestion.mockImplementationOnce(() => null);
+        const result = sut.voteQuestion(1, 'upvote');
+        await expect(result).rejects.toThrow(APIError);
+    });
+
+    it('returns score when question exists', async () => {
+        const question: Question = {
+            question: '',
+            student: '',
+            class: '',
+            score: 5,
+        };
+        voteQuestion.mockImplementationOnce(async () => question);
+        const result = await sut.voteQuestion(1, 'upvote');
+        expect(result).toEqual(question.score);
+    });
+});
