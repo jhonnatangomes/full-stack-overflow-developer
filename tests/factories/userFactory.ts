@@ -46,6 +46,10 @@ function alphaNumericFactory() {
     return faker.random.alphaNumeric(15);
 }
 
+function nameFactory() {
+    return faker.name.findName();
+}
+
 export {
     incorrectUser,
     correctUser,
@@ -53,4 +57,5 @@ export {
     stringFactory,
     tokenFactory,
     alphaNumericFactory,
+    nameFactory,
 };

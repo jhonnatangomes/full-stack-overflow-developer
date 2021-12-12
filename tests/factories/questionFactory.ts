@@ -49,7 +49,7 @@ async function createUnansweredQuestion(): Promise<Question> {
     return result.rows[0];
 }
 
-async function createAnsweredQuestion(): Promise<Question> {
+async function createAnsweredQuestion(answeredBy?: string): Promise<Question> {
     const question = {
         question: faker.datatype.string(),
         student: faker.name.findName(),
@@ -76,7 +76,7 @@ async function createAnsweredQuestion(): Promise<Question> {
             question.answered,
             question.submittedAt,
             question.answeredAt,
-            question.answeredBy,
+            answeredBy || question.answeredBy,
             question.answer,
         ]
     );
