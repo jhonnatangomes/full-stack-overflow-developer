@@ -62,9 +62,18 @@ async function getAllUnansweredQuestions(): Promise<Question[]> {
     return result.rows;
 }
 
+async function getAllQuestions(): Promise<Question[]> {
+    const result = await connection.query(`
+        SELECT * FROM questions;
+    `);
+
+    return result.rows;
+}
+
 export {
     postQuestion,
     getQuestionById,
     answerQuestion,
     getAllUnansweredQuestions,
+    getAllQuestions,
 };

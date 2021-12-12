@@ -1,5 +1,5 @@
 import connection from '../database';
-import User from '../interfaces/UserInterface';
+import { User } from '../interfaces/UserInterface';
 
 async function getUserByColumn(
     searchParam: string,

@@ -1,7 +1,7 @@
 import supertest from 'supertest';
 import app from '../../src/app';
 import { Question } from '../../src/interfaces/QuestionsInterface';
-import User from '../../src/interfaces/UserInterface';
+import { User } from '../../src/interfaces/UserInterface';
 import { cleanDatabase, endConnection } from '../database/connection';
 import { getQuestionById } from '../database/questions';
 
