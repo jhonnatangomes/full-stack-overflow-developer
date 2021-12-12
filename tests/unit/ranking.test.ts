@@ -71,7 +71,7 @@ describe('get ranking', () => {
     );
 
     it('returns ordered ranking', async () => {
-        const result = await sut.getRanking();
+        const result = await sut.getRanking('normal');
         expect(result).toEqual(ranking);
     });
 });
