@@ -1,36 +1,24 @@
 import { Ranking } from '../interfaces/RankingInterface';
 import * as questionsRepositories from '../repositories/questionsRepositories';
+import { createRanking } from './helpersServices';
 
-async function getRanking(): Promise<Ranking[]> {
+async function getRanking(rankingType: string): Promise<Ranking[]> {
     const questions = await questionsRepositories.getAllQuestions();
 
-    let ranking: Ranking[] = [];
+    let ranking = createRanking(questions);
 
-    questions.forEach((question) => {
-        if (question.answered) {
-            const nameAlreadyInRanking: boolean = ranking.some(
-                (el) => el.name === question.answeredBy
-            );
-            if (!nameAlreadyInRanking) {
-                ranking.push({
-                    name: question.answeredBy,
-                    answers: 1,
-                });
-            } else {
-                ranking = ranking.map((el) => {
-                    if (el.name === question.answeredBy) {
-                        return {
-                            ...el,
-                            answers: el.answers + 1,
-                        };
-                    }
-                    return el;
-                });
-            }
-        }
-    });
+    if (rankingType === 'normal') {
+        ranking = ranking.map((el) => ({
+            name: el.name,
+            answers: el.answers,
+        }));
 
-    ranking.sort((a, b) => b.answers - a.answers);
+        ranking.sort((a, b) => b.answers - a.answers);
+    }
+
+    if (rankingType === 'weighted') {
+        ranking.sort((a, b) => b.points - a.points);
+    }
 
     return ranking;
 }
