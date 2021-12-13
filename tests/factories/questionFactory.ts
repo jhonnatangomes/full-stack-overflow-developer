@@ -48,7 +48,10 @@ async function createUnansweredQuestion(): Promise<Question> {
     return result.rows[0];
 }
 
-async function createAnsweredQuestion(answeredBy?: string): Promise<Question> {
+async function createAnsweredQuestion(
+    answeredBy?: string,
+    score?: number
+): Promise<Question> {
     const question = {
         question: faker.datatype.string(),
         student: faker.name.findName(),
@@ -64,8 +67,8 @@ async function createAnsweredQuestion(answeredBy?: string): Promise<Question> {
     const result = await connection.query(
         `
         INSERT INTO questions
-        (question, student, class, tags, answered, "submittedAt", "answeredAt", "answeredBy", answer)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;
+        (question, student, class, tags, answered, "submittedAt", "answeredAt", "answeredBy", answer, score)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *;
     `,
         [
             question.question,
@@ -77,6 +80,7 @@ async function createAnsweredQuestion(answeredBy?: string): Promise<Question> {
             question.answeredAt,
             answeredBy || question.answeredBy,
             question.answer,
+            score || 1,
         ]
     );
 
