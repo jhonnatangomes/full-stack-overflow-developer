@@ -31,8 +31,8 @@ async function createUnansweredQuestion(): Promise<Question> {
 
     const result = await connection.query(
         `
-        INSERT INTO questions (question, student, class, tags)
-        VALUES ($1, $2, $3, $4) RETURNING *;
+        INSERT INTO questions (question, student, class, tags, "submittedAt")
+        VALUES ($1, $2, $3, $4, now()) RETURNING *;
     `,
         [question.question, question.student, question.class, question.tags]
     );

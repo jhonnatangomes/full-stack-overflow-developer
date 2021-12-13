@@ -11,7 +11,7 @@ async function postQuestion(question: Question): Promise<Question> {
 
     const result = await connection.query(
         `
-        INSERT INTO questions (question, student, class, tags) VALUES ($1, $2, $3, $4)
+        INSERT INTO questions (question, student, class, tags, "submittedAt") VALUES ($1, $2, $3, $4, now())
         RETURNING *
     `,
         [questionName, student, questionClass, tags]
@@ -57,6 +57,7 @@ async function getAllUnansweredQuestions(): Promise<Question[]> {
         SELECT id, question, student, class, "submittedAt"
         FROM questions
         WHERE answered = false
+        ORDER BY id
     `);
 
     return result.rows;
