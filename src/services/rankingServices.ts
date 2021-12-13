@@ -20,7 +20,7 @@ async function getRanking(rankingType: string): Promise<Ranking[]> {
         ranking.sort((a, b) => b.points - a.points);
     }
 
-    return ranking;
+    return ranking.slice(0, 10);
 }
 
 export { getRanking };
