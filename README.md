@@ -168,13 +168,13 @@ Returns the top 10 people ranked by the attribute points. This is the sum of all
 
     [
         {
-    	    "name": "Jhonn",
-    	    "answers": 132,
+    	"name": "Jhonn",
+    	"answers": 132,
             "points": 210
         },
         {
-    	    "name": "Gomium",
-    	    "answers": 175,
+    	"name": "Gomium",
+    	"answers": 175,
             "points": 195
         }
     ]
