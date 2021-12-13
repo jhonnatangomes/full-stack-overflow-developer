@@ -1,0 +1,18 @@
+#!/bin/bash
+
+source src/functions;
+
+DATABASE=$(cat src/database);
+DATABASE_TEST=$(cat src/database_test);
+ROLE=$(cat src/role);
+
+echo "Checando status do postgres..." &&
+checkPostgres &&
+
+createRole $ROLE &&
+
+restoreDatabase $DATABASE full_stack_overflow_developer_development.sql &&
+
+restoreDatabase $DATABASE_TEST full_stack_overflow_developer_test.sql &&
+
+createEnvVariables $ROLE $DATABASE $DATABASE_TEST;
