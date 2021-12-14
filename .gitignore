@@ -1,9 +1,6 @@
 #node modules
 node_modules
 
-#ts config
-tsconfig.json
-
 #environment variables
 .env
 .env.development
