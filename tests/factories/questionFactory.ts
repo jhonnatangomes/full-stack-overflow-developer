@@ -1,4 +1,4 @@
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import dayjs from 'dayjs';
 import connection from '../../src/database';
 import { Question } from '../../src/interfaces/QuestionsInterface';
