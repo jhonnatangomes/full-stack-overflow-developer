@@ -1,4 +1,4 @@
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import connection from '../../src/database';
 import { User } from '../../src/interfaces/UserInterface';
 
